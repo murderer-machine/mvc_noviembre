@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
-import { Container, Row, Col, Accordion, Card, Alert, Image, Spinner, Button, Form, InputGroup,Modal } from 'react-bootstrap'
+import { Container, Row, Col, Accordion, Card, Alert, Image, Spinner, Button, Form, InputGroup, Modal } from 'react-bootstrap'
 import { estilos, color_principal, confiTypeahead } from '../../estilos'
 import { EyeFill, Scissors, PlusCircleFill, DashCircleFill, Justify, Search, EmojiFrown, CheckCircleFill, ExclamationDiamond } from 'react-bootstrap-icons'
 import { Typeahead } from 'react-bootstrap-typeahead'
@@ -130,6 +130,9 @@ const Cupones = () => {
                                 <Form.Control name="nro_cuota" type="text" placeholder="Ingrese Nº cuota" onChange={CambiarInput} value={datos.nro_cuota} />
                             </Form.Group>
                         </Card>
+                        <Button variant="primary" onClick={ModalAnularAbrir}>
+                            Launch demo modal
+                        </Button>
                     </Col>
                     {spinnerCupones ? (
                         <Col xs={12} lg={8} className="my-2 text-center">
@@ -253,7 +256,7 @@ const Cupones = () => {
                     <Button variant="secondary" onClick={ModalAnularCerrar}>
                         Close
           </Button>
-                    <Button variant="primary" onClick={ModalAnularCerrars}>
+                    <Button variant="primary" onClick={ModalAnularCerrar}>
                         Save Changes
           </Button>
                 </Modal.Footer>
