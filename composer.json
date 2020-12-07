@@ -1,0 +1,18 @@
+{
+    "name": "marcorodriguez/alekas",
+    "description": "sistema mvc alekas",
+    "authors": [
+        {
+            "name": "Marco Antonio Rodriguez Salinas",
+            "email": "alekas_oficial@outlook.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "alekas\\": "./"
+        }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.2"
+    }
+}
