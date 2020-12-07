@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
-import { Container, Row, Col, Accordion, Card, Alert, Image, Spinner, Button, Form, InputGroup } from 'react-bootstrap'
+import { Container, Row, Col, Accordion, Card, Alert, Image, Spinner, Button, Form, InputGroup,Modal } from 'react-bootstrap'
 import { estilos, color_principal, confiTypeahead } from '../../estilos'
 import { EyeFill, Scissors, PlusCircleFill, DashCircleFill, Justify, Search, EmojiFrown, CheckCircleFill, ExclamationDiamond } from 'react-bootstrap-icons'
 import { Typeahead } from 'react-bootstrap-typeahead'
