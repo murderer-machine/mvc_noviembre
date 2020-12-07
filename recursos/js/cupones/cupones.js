@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
-import { Container, Row, Col, Accordion, Card, Alert, Image, Spinner, Button, Form, InputGroup } from 'react-bootstrap'
+import { Container, Row, Col, Accordion, Card, Alert, Image, Spinner, Button, Form, InputGroup, Modal } from 'react-bootstrap'
 import { estilos, color_principal, confiTypeahead } from '../../estilos'
 import { EyeFill, Scissors, PlusCircleFill, DashCircleFill, Justify, Search, EmojiFrown, CheckCircleFill, ExclamationDiamond } from 'react-bootstrap-icons'
 import { Typeahead } from 'react-bootstrap-typeahead'
@@ -84,6 +84,13 @@ const Cupones = () => {
             }
             )
     }, [])
+
+    const [showModalAnular, setShowModalAnular] = useState(false)
+    const ModalAnularCerrar = () => setShowModalAnular(false)
+    const ModalAnularAbrir = () => {
+        alert('aqui')
+        setShowModalAnular(true)
+    }
     return (
         <>
             <Container fluid>
@@ -125,7 +132,6 @@ const Cupones = () => {
                                 <Form.Label>Nº de cuota</Form.Label>
                                 <Form.Control name="nro_cuota" type="text" placeholder="Ingrese Nº cuota" onChange={CambiarInput} value={datos.nro_cuota} />
                             </Form.Group>
-
                         </Card>
                     </Col>
                     {spinnerCupones ? (
@@ -171,7 +177,7 @@ const Cupones = () => {
                                                                     <Alert variant="secondary">
                                                                         <div>
                                                                             <Image src={`./img/logos_empresas_seguros/${poliza.id_poliza.id_empresa.logo}`} fluid style={{ height: '20px' }} />
-                                                                            <Button size="sm" onClick={() => { anularPoliza(poliza.id_poliza.id) }} style={{ position: 'absolute', top: 0, right: 0, backgroundColor: '#383d41', color: '#fff', borderWidth: 0 }}>Anular</Button><br />
+                                                                            <Button size="sm" onClick={() => { ModalAnularAbrir }} style={{ position: 'absolute', top: 0, right: 0, backgroundColor: '#383d41', color: '#fff', borderWidth: 0 }}>Anular</Button><br />
                                                                             <b>{poliza.id_poliza.id_empresa.nombre.toUpperCase()} - {poliza.id_poliza.id_empresa.ruc.toUpperCase()}</b><br />
                                                                             <b><EyeFill size={20} style={{ cursor: 'pointer' }} /> {poliza.id_poliza.id_ramo.descripcion.toUpperCase()}</b> - {poliza.id_poliza.id_producto.nombre.toUpperCase()}<br />
                                                                             <b>Nº {poliza.id_poliza.nro_poliza_corregido === '' ? poliza.id_poliza.nro_poliza : poliza.id_poliza.nro_poliza_corregido}</b>
@@ -187,41 +193,46 @@ const Cupones = () => {
                                                                         {poliza.documentos.map((documento, i) => (
                                                                             <Row key={i}>
                                                                                 <Col>
-                                                                                    <Row >
-                                                                                        {documento.cupones.map((cupon, i) => (
-                                                                                            <Col key={i} xs={12} md={4} lg={4} xl={3}>
-                                                                                                <div className="cupon_vencido text-center">
-                                                                                                    <Scissors size={20} style={{
-                                                                                                        position: 'absolute',
-                                                                                                        top: -10,
-                                                                                                        left: 5,
-                                                                                                        transform: 'rotate(90deg)'
-                                                                                                    }} />
-                                                                                        Cupón Nº <b>{cupon.nro_orden}</b><br />
-                                                                                                    <b>CP {cupon.nro_cuota}</b><br />
-                                                                                                    <b>{poliza.id_poliza.moneda.simbolo} {cupon.importe}</b><br />
-                                                                                                    <b>{cupon.fecha_obligacion}</b><br />
-                                                                                                    <b> Pago vencido {cupon.dias_vencidos} {cupon.dias_vencidos > 1 ? 'dias' : 'dia'}</b><br />
-                                                                                                    <h6>VENCIDO</h6>
-                                                                                                    <CheckCircleFill
-                                                                                                        color="#F44336"
-                                                                                                        size={30}
-                                                                                                        style={{
-                                                                                                            position: 'absolute',
-                                                                                                            top: '10px',
-                                                                                                            right: '30px',
-                                                                                                            cursor: 'pointer'
-                                                                                                        }}
-                                                                                                        onClick={() => { alert(poliza.id_poliza.id) }}
-                                                                                                    />
-                                                                                                </div>
-                                                                                            </Col>
-                                                                                        ))}
+                                                                                    <Row>
+                                                                                        <Col xs={12} lg={8}>
+                                                                                            <Row>
+                                                                                                {documento.cupones.map((cupon, i) => (
+                                                                                                    <Col key={i} xs={12} md={6} lg={6} xl={4}>
+                                                                                                        <div className="cupon_vencido text-center">
+                                                                                                            <Scissors size={20} style={{
+                                                                                                                position: 'absolute',
+                                                                                                                top: -10,
+                                                                                                                left: 5,
+                                                                                                                transform: 'rotate(90deg)'
+                                                                                                            }} />
+                                                                                                    Cupón Nº <b>{cupon.nro_orden} - {cupon.fecha_obligacion}</b><br />
+                                                                                                            <b>CP {cupon.nro_cuota}</b><br />
+                                                                                                            <b>{poliza.id_poliza.moneda.simbolo} {cupon.importe}</b><br />
+                                                                                                            <h6><b><small>Pago vencido </small>{cupon.dias_vencidos}<small> {cupon.dias_vencidos > 1 ? 'días' : 'día'}</small></b></h6>
+                                                                                                            <CheckCircleFill
+                                                                                                                color="#F44336"
+                                                                                                                size={30}
+                                                                                                                style={{
+                                                                                                                    position: 'absolute',
+                                                                                                                    top: '40.5px',
+                                                                                                                    right: '0',
+                                                                                                                    cursor: 'pointer'
+                                                                                                                }}
+                                                                                                                onClick={() => { alert(poliza.id_poliza.id) }}
+                                                                                                            />
+                                                                                                        </div>
+                                                                                                    </Col>
+                                                                                                ))}
+                                                                                            </Row>
+                                                                                        </Col>
+                                                                                        <Col xs={12} lg={4}>
+                                                                                            Hache (Mario Casas) regresa desde Londres a Barcelona, donde ha pasado dos años. Hache no ha podido dejar atrás su pasado: ni a Pollo, ni a su familia, ni a Babi. Una de las primeras personas con las que se reencuentra es con Katina (Marina Salas), la antigua novia de Pollo. Por lo visto, ella tampoco ha podido superar su muerte.
+                                                                                        </Col>
                                                                                     </Row>
                                                                                 </Col>
                                                                             </Row>
                                                                         ))}
-                                                                        <div className="anular_poliza" style={{ display: id_poliza_seleccionada == poliza.id_poliza.id ? 'flex' : 'none' }}><Spinner animation="border"/><span className="mx-2">Anulando ...</span></div>
+                                                                        <div className="anular_poliza" style={{ display: id_poliza_seleccionada == poliza.id_poliza.id ? 'flex' : 'none' }}><Spinner animation="border" /><span className="mx-2">Anulando ...</span></div>
                                                                     </Alert>
                                                                 </Col>
                                                             </Row>
@@ -236,6 +247,20 @@ const Cupones = () => {
                         )}
                 </Row>
             </Container>
+            <Modal show={showModalAnular} onHide={ModalAnularCerrar}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Modal heading</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={ModalAnularCerrar}>
+                        Close
+          </Button>
+                    <Button variant="primary" onClick={ModalAnularCerrar}>
+                        Save Changes
+          </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }
