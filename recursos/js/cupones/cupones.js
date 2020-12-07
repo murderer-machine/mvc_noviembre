@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
-import { Container, Row, Col, Accordion, Card, Alert, Image, Spinner, Button, Form, InputGroup, Modal } from 'react-bootstrap'
+import { Container, Row, Col, Accordion, Card, Alert, Image, Spinner, Button, Form, InputGroup } from 'react-bootstrap'
 import { estilos, color_principal, confiTypeahead } from '../../estilos'
 import { EyeFill, Scissors, PlusCircleFill, DashCircleFill, Justify, Search, EmojiFrown, CheckCircleFill, ExclamationDiamond } from 'react-bootstrap-icons'
 import { Typeahead } from 'react-bootstrap-typeahead'
@@ -87,10 +87,7 @@ const Cupones = () => {
 
     const [showModalAnular, setShowModalAnular] = useState(false)
     const ModalAnularCerrar = () => setShowModalAnular(false)
-    const ModalAnularAbrir = () => {
-        alert('aqui')
-        setShowModalAnular(true)
-    }
+    const ModalAnularAbrir = () => setShowModalAnular(true)
     return (
         <>
             <Container fluid>
@@ -177,7 +174,7 @@ const Cupones = () => {
                                                                     <Alert variant="secondary">
                                                                         <div>
                                                                             <Image src={`./img/logos_empresas_seguros/${poliza.id_poliza.id_empresa.logo}`} fluid style={{ height: '20px' }} />
-                                                                            <Button size="sm" onClick={() => { ModalAnularAbrir }} style={{ position: 'absolute', top: 0, right: 0, backgroundColor: '#383d41', color: '#fff', borderWidth: 0 }}>Anular</Button><br />
+                                                                            <Button size="sm" onClick={() => { anularPoliza(poliza.id_poliza.id) }} style={{ position: 'absolute', top: 0, right: 0, backgroundColor: '#383d41', color: '#fff', borderWidth: 0 }}>Anular</Button><br />
                                                                             <b>{poliza.id_poliza.id_empresa.nombre.toUpperCase()} - {poliza.id_poliza.id_empresa.ruc.toUpperCase()}</b><br />
                                                                             <b><EyeFill size={20} style={{ cursor: 'pointer' }} /> {poliza.id_poliza.id_ramo.descripcion.toUpperCase()}</b> - {poliza.id_poliza.id_producto.nombre.toUpperCase()}<br />
                                                                             <b>Nº {poliza.id_poliza.nro_poliza_corregido === '' ? poliza.id_poliza.nro_poliza : poliza.id_poliza.nro_poliza_corregido}</b>
@@ -256,7 +253,7 @@ const Cupones = () => {
                     <Button variant="secondary" onClick={ModalAnularCerrar}>
                         Close
           </Button>
-                    <Button variant="primary" onClick={ModalAnularCerrar}>
+                    <Button variant="primary" onClick={ModalAnularCerrars}>
                         Save Changes
           </Button>
                 </Modal.Footer>
