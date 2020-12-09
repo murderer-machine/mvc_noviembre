@@ -20,3 +20,6 @@ label {
 label::after {
     content: " :";
 }
+* {
+    box-shadow: none;
+}

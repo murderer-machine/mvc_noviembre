@@ -107,6 +107,12 @@ const Cupones = () => {
         })
         setShowModalAnular(true)
     }
+    const EnviarRespuestaComentario = (e) => {
+        if (e.keyCode == 13) {
+            alert(e.target.value)
+            setRespuesta_comentario('')
+        }
+    }
     return (
         <>
             <Container fluid>
@@ -250,7 +256,7 @@ const Cupones = () => {
                                                                                                         <p className="p-0 m-0">{comentario.comentario}</p>
                                                                                                         <small>{comentario.fecha_hora}</small> · <small onClick={() => { setId_respuesta_comentario(comentario.id) }} style={{ color: color_principal }}>Responder</small>
                                                                                                         {id_respuesta_comentario === comentario.id ? (
-                                                                                                            <Form.Control name="respuesta_comentario" type="text" placeholder="Escribe una respuesta..." onChange={e => setRespuesta_comentario(e.target.value)} value={respuesta_comentario} onSubmit={() => alert('enviado')} />
+                                                                                                            <Form.Control name="respuesta_comentario" type="text" placeholder="Escribe una respuesta..." onChange={e => setRespuesta_comentario(e.target.value)} value={respuesta_comentario} onKeyDown={EnviarRespuestaComentario} />
                                                                                                         ) : (<></>)}
                                                                                                     </div>
                                                                                                 </div>
