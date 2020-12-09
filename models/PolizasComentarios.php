@@ -10,15 +10,13 @@ class PolizasComentarios extends Model {
     protected $id = null;
     protected $id_poliza;
     protected $comentario;
-    protected $fecha_hora;
-    protected $id_usuario;
+    protected $fecha_hora = fecha_hora;
+    protected $id_usuario = 0;
 
     function __construct($id_poliza, $comentario) {
         $this->id_poliza = $id_poliza;
         $this->comentario = $comentario;
-        $this->id = null;
-        $this->fecha_hora = fecha_hora;
-        $this->id_usuario = 0;
+
     }
 
     function getId() {
