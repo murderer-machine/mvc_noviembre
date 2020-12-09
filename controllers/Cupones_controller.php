@@ -95,5 +95,12 @@ class Cupones_controller extends Controller {
         $respuesta = $poliza->update();
         echo $this->json($respuesta);
     }
+    
+    public function agregarRespuestaComentario(){
+        $polizacomentario = new PolizasComentarios(351, 'ejemplo');
+        $respuesta = $polizacomentario->create();
+        print_r($respuesta);
+        
+    }
 
 }

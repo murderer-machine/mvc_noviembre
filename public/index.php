@@ -20,6 +20,7 @@ $app->ruta->get('aseguradoras/mostrar', [EmpresasSeguros_controller::class, 'mos
 $app->ruta->get('clientes/mostrar', [Clientes_controller::class, 'mostrar']);
 
 $app->ruta->get('cupones/anularpoliza', [Cupones_controller::class, 'anularPoliza']);
+$app->ruta->get('cupones/agregarrespuesta', [Cupones_controller::class, 'agregarRespuestaComentario']);
 
 //Vistas
 $app->ruta->get('/', 'cupones');
