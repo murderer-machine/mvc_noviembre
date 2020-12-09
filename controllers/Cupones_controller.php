@@ -17,11 +17,12 @@ use alekas\models\Monedas;
 use alekas\models\PolizasVehiculos;
 use alekas\models\Marcas;
 use alekas\models\Modelos;
+use alekas\models\PolizasComentarios;
 
 class Cupones_controller extends Controller {
 
     public function mostrar(Request $request) {
-        $where = [['fecha_obligacion', fecha, '<='], ['situacion', 0],['anulada',0]];
+        $where = [['fecha_obligacion', fecha, '<='], ['situacion', 0], ['anulada', 0]];
         $orwhere = [];
         if (count($request->parametrosUrl()) > 0) {
             $request->parametrosUrl()[0] == 'null' ?: array_push($where, ['t_polizas.id_empresa', $request->parametrosUrl()[0]]);
@@ -43,8 +44,11 @@ class Cupones_controller extends Controller {
             $polizas = FuncionesArray::groupArray($cupones[$cupon_k]['polizas'], 'id_poliza', 'documentos');
             $cupones[$cupon_k]['polizas'] = $polizas;
             foreach ($cupones[$cupon_k]['polizas'] as $polizas_k => $polizas_v) {
+            
                 $documentos = FuncionesArray::groupArray($cupones[$cupon_k]['polizas'][$polizas_k]['documentos'], 'id_documento', 'cupones');
+                $polizacomentarios = PolizasComentarios::select()->where([['id_poliza', $polizas_v['id_poliza']]])->run()->datos();
                 $cupones[$cupon_k]['polizas'][$polizas_k]['documentos'] = $documentos;
+                $cupones[$cupon_k]['polizas'][$polizas_k]['comentarios'] = $polizacomentarios;
             }
         }
         foreach ($cupones as $cupon_k => $cupon_v) {

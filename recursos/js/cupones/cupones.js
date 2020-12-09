@@ -8,7 +8,11 @@ import './cupones.scss'
 const Cupones = () => {
     const [listEmpresas, setListEmpresas] = useState([])
     const [listClientes, setListClientes] = useState([])
-    const [id_poliza_seleccionada, setId_poliza_seleccionada] = useState(0)
+    const [id_poliza_seleccionada, setId_poliza_seleccionada] = useState({
+        id_polizas: '',
+        condicion: false,
+        nro_poliza: '',
+    })
     const [cupones, setCupones] = useState([])
     const [spinnerCupones, setSpinnerCupones] = useState(true)
     const [condicionAnular, setCondicionAnular] = useState(true)
@@ -19,6 +23,8 @@ const Cupones = () => {
         nro_poliza: '',
         nro_cuota: '',
     })
+    const [respuesta_comentario, setRespuesta_comentario] = useState('')
+    const [id_respuesta_comentario, setId_respuesta_comentario] = useState('')
     const [activeId, setActiveId] = useState(null);
     const toggleActive = (id) => {
         if (activeId === id) {
@@ -56,17 +62,24 @@ const Cupones = () => {
             .then(response => response.json())
             .then(response => {
                 setCupones(response)
-                condicionCupones < 1 ? setSpinnerCupones(false) : setId_poliza_seleccionada(0)
+                condicionCupones < 1 ? setSpinnerCupones(false) : setId_poliza_seleccionada({
+                    id_polizas: '',
+                    condicion: false,
+                    nro_poliza: '',
+                })
             }
             )
     }, [datos, condicionAnular])
-    const anularPoliza = (id) => {
-        setId_poliza_seleccionada(id)
-        fetch(`/cupones/anularpoliza/${id}`)
+    const anularPoliza = () => {
+        ModalAnularCerrar()
+        setId_poliza_seleccionada({
+            ...id_poliza_seleccionada,
+            condicion: true
+        })
+        fetch(`/cupones/anularpoliza/${id_poliza_seleccionada.id_polizas}`)
             .then(response => response.json())
             .then(response => {
                 setCondicionAnular(!condicionAnular)
-                inputRef.current[id].style.display = 'none'
             }
             )
     }
@@ -84,10 +97,16 @@ const Cupones = () => {
             }
             )
     }, [])
-
     const [showModalAnular, setShowModalAnular] = useState(false)
     const ModalAnularCerrar = () => setShowModalAnular(false)
-    const ModalAnularAbrir = () => setShowModalAnular(true)
+    const ModalAnularAbrir = (id, nro_poliza) => {
+        setId_poliza_seleccionada({
+            ...id_poliza_seleccionada,
+            id_polizas: id,
+            nro_poliza: nro_poliza,
+        })
+        setShowModalAnular(true)
+    }
     return (
         <>
             <Container fluid>
@@ -130,9 +149,7 @@ const Cupones = () => {
                                 <Form.Control name="nro_cuota" type="text" placeholder="Ingrese Nº cuota" onChange={CambiarInput} value={datos.nro_cuota} />
                             </Form.Group>
                         </Card>
-                        <Button variant="primary" onClick={ModalAnularAbrir}>
-                            Launch demo modal
-                        </Button>
+                        {JSON.stringify(id_poliza_seleccionada)}
                     </Col>
                     {spinnerCupones ? (
                         <Col xs={12} lg={8} className="my-2 text-center">
@@ -177,7 +194,7 @@ const Cupones = () => {
                                                                     <Alert variant="secondary">
                                                                         <div>
                                                                             <Image src={`./img/logos_empresas_seguros/${poliza.id_poliza.id_empresa.logo}`} fluid style={{ height: '20px' }} />
-                                                                            <Button size="sm" onClick={() => { anularPoliza(poliza.id_poliza.id) }} style={{ position: 'absolute', top: 0, right: 0, backgroundColor: '#383d41', color: '#fff', borderWidth: 0 }}>Anular</Button><br />
+                                                                            <Button size="sm" onClick={() => { ModalAnularAbrir(poliza.id_poliza.id, poliza.id_poliza.nro_poliza_corregido === '' ? poliza.id_poliza.nro_poliza : poliza.id_poliza.nro_poliza_corregido) }} style={{ position: 'absolute', top: 0, right: 0, backgroundColor: '#383d41', color: '#fff', borderWidth: 0 }}>Anular</Button><br />
                                                                             <b>{poliza.id_poliza.id_empresa.nombre.toUpperCase()} - {poliza.id_poliza.id_empresa.ruc.toUpperCase()}</b><br />
                                                                             <b><EyeFill size={20} style={{ cursor: 'pointer' }} /> {poliza.id_poliza.id_ramo.descripcion.toUpperCase()}</b> - {poliza.id_poliza.id_producto.nombre.toUpperCase()}<br />
                                                                             <b>Nº {poliza.id_poliza.nro_poliza_corregido === '' ? poliza.id_poliza.nro_poliza : poliza.id_poliza.nro_poliza_corregido}</b>
@@ -194,10 +211,10 @@ const Cupones = () => {
                                                                             <Row key={i}>
                                                                                 <Col>
                                                                                     <Row>
-                                                                                        <Col xs={12} lg={8}>
+                                                                                        <Col xs={12} md={12} lg={6}>
                                                                                             <Row>
                                                                                                 {documento.cupones.map((cupon, i) => (
-                                                                                                    <Col key={i} xs={12} md={6} lg={6} xl={4}>
+                                                                                                    <Col key={i} xs={12} md={6} lg={6} xl={6}>
                                                                                                         <div className="cupon_vencido text-center">
                                                                                                             <Scissors size={20} style={{
                                                                                                                 position: 'absolute',
@@ -205,7 +222,7 @@ const Cupones = () => {
                                                                                                                 left: 5,
                                                                                                                 transform: 'rotate(90deg)'
                                                                                                             }} />
-                                                                                                    Cupón Nº <b>{cupon.nro_orden} - {cupon.fecha_obligacion}</b><br />
+                                                                                                    Cupón Nº {cupon.nro_orden} - <b>{cupon.fecha_obligacion}</b><br />
                                                                                                             <b>CP {cupon.nro_cuota}</b><br />
                                                                                                             <b>{poliza.id_poliza.moneda.simbolo} {cupon.importe}</b><br />
                                                                                                             <h6><b><small>Pago vencido </small>{cupon.dias_vencidos}<small> {cupon.dias_vencidos > 1 ? 'días' : 'día'}</small></b></h6>
@@ -225,14 +242,25 @@ const Cupones = () => {
                                                                                                 ))}
                                                                                             </Row>
                                                                                         </Col>
-                                                                                        <Col xs={12} lg={4}>
-                                                                                            Hache (Mario Casas) regresa desde Londres a Barcelona, donde ha pasado dos años. Hache no ha podido dejar atrás su pasado: ni a Pollo, ni a su familia, ni a Babi. Una de las primeras personas con las que se reencuentra es con Katina (Marina Salas), la antigua novia de Pollo. Por lo visto, ella tampoco ha podido superar su muerte.
+                                                                                        <Col xs={12} md={12} lg={6} >
+                                                                                            {poliza.comentarios.map((comentario, i) => (
+                                                                                                <div className="my-2">
+                                                                                                    <div className="caja_comentario py-2 px-4">
+                                                                                                        <small style={{ color: color_principal }}>Carlos Valdivia</small>
+                                                                                                        <p className="p-0 m-0">{comentario.comentario}</p>
+                                                                                                        <small>{comentario.fecha_hora}</small> · <small onClick={() => { setId_respuesta_comentario(comentario.id) }} style={{ color: color_principal }}>Responder</small>
+                                                                                                        {id_respuesta_comentario === comentario.id ? (
+                                                                                                            <Form.Control name="respuesta_comentario" type="text" placeholder="Escribe una respuesta..." onChange={e => setRespuesta_comentario(e.target.value)} value={respuesta_comentario} onSubmit={() => alert('enviado')} />
+                                                                                                        ) : (<></>)}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            ))}
                                                                                         </Col>
                                                                                     </Row>
                                                                                 </Col>
                                                                             </Row>
                                                                         ))}
-                                                                        <div className="anular_poliza" style={{ display: id_poliza_seleccionada == poliza.id_poliza.id ? 'flex' : 'none' }}><Spinner animation="border" /><span className="mx-2">Anulando ...</span></div>
+                                                                        <div className="anular_poliza" style={{ display: id_poliza_seleccionada.id_polizas == poliza.id_poliza.id && id_poliza_seleccionada.condicion ? 'flex' : 'none' }}><Spinner animation="border" /><span className="mx-2">Anulando ...</span></div>
                                                                     </Alert>
                                                                 </Col>
                                                             </Row>
@@ -248,17 +276,16 @@ const Cupones = () => {
                 </Row>
             </Container>
             <Modal show={showModalAnular} onHide={ModalAnularCerrar}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                <Modal.Body>
+                    ¿Esta seguro que desea anular la poliza <b>Nº {id_poliza_seleccionada.nro_poliza}</b>?
+                </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={ModalAnularCerrar}>
-                        Close
-          </Button>
-                    <Button variant="primary" onClick={ModalAnularCerrar}>
-                        Save Changes
-          </Button>
+                    <Button variant="secondary" size="sm" onClick={ModalAnularCerrar}>
+                        Cancelar
+                    </Button>
+                    <Button variant="danger" size="sm" onClick={anularPoliza}>
+                        Anular
+                    </Button>
                 </Modal.Footer>
             </Modal>
         </>
