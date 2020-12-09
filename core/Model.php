@@ -23,10 +23,10 @@ class Model {
         try {
             self::$db = new Database(
                     $_ENV['_DB_TYPE'],
-                    $_ENV['MODO'] === 'prod' ? $_ENV['_DB_HOST_PROD'] : $_ENV['_DB_HOST'],
-                    $_ENV['MODO'] === 'prod' ? $_ENV['_DB_NAME_PROD'] : $_ENV['_DB_NAME'],
-                    $_ENV['MODO'] === 'prod' ? $_ENV['_DB_USER_PROD'] : $_ENV['_DB_USER'],
-                    $_ENV['MODO'] === 'prod' ? $_ENV['_DB_PASS_PROD'] : $_ENV['_DB_PASS']);
+                    $_ENV['MODO'] === 'prod' ? $_ENV['_DB_HOST_PROD'] : $_ENV['_DB_HOST_DEV'],
+                    $_ENV['MODO'] === 'prod' ? $_ENV['_DB_NAME_PROD'] : $_ENV['_DB_NAME_DEV'],
+                    $_ENV['MODO'] === 'prod' ? $_ENV['_DB_USER_PROD'] : $_ENV['_DB_USER_DEV'],
+                    $_ENV['MODO'] === 'prod' ? $_ENV['_DB_PASS_PROD'] : $_ENV['_DB_PASS_DEV']);
             self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             print "¡Error!: " . $e->getMessage();
