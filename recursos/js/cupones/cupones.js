@@ -15,6 +15,7 @@ const Cupones = () => {
     })
     const [cupones, setCupones] = useState([])
     const [spinnerCupones, setSpinnerCupones] = useState(true)
+    const [spinnerComentarios, setSpinnerComentarios] = useState(false)
     const [condicionAnular, setCondicionAnular] = useState(true)
     const [condicionCupones, setCondicionCupones] = useState(0)
     const [datos, setDatos] = useState({
@@ -25,6 +26,10 @@ const Cupones = () => {
     })
     const [respuesta_comentario, setRespuesta_comentario] = useState('')
     const [id_respuesta_comentario, setId_respuesta_comentario] = useState('')
+    const [id_respuesta_comentario_condicion, setId_respuesta_comentario_condicion] = useState({
+        condicion: false,
+        texto: '',
+    })
     const [activeId, setActiveId] = useState(null);
     const toggleActive = (id) => {
         if (activeId === id) {
@@ -67,6 +72,7 @@ const Cupones = () => {
                     condicion: false,
                     nro_poliza: '',
                 })
+                setSpinnerComentarios(false)
             }
             )
     }, [datos, condicionAnular])
@@ -107,10 +113,48 @@ const Cupones = () => {
         })
         setShowModalAnular(true)
     }
-    const EnviarRespuestaComentario = (e) => {
+    const EnviarRespuestaComentario = (e, id_comentario) => {
         if (e.keyCode == 13) {
-            alert(e.target.value)
-            setRespuesta_comentario('')
+            if (e.target.value === '') {
+                setId_respuesta_comentario_condicion({
+                    ...id_respuesta_comentario_condicion,
+                    condicion: true,
+                    texto: 'Escriba una respuesta',
+                })
+            } else {
+                setSpinnerComentarios(true)
+                let datos = {
+                    id_poliza_comentario: id_comentario,
+                    comentario: e.target.value
+                }
+                console.log(JSON.stringify(datos))
+                fetch('/cupones/agregarrespuesta', {
+                    method: 'POST',
+                    body: JSON.stringify(datos),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(res => res.json())
+                    .catch(error => console.error('Error:', error))
+                    .then(response => {
+                        if (response.error == 0) {
+                            setRespuesta_comentario('')
+                            setId_respuesta_comentario_condicion({
+                                ...id_respuesta_comentario_condicion,
+                                condicion: false,
+                                texto: '',
+                            })
+                            setCondicionAnular(!condicionAnular)
+                        }
+                        if (response.error == 1) {
+                            setId_respuesta_comentario_condicion({
+                                ...id_respuesta_comentario_condicion,
+                                condicion: true,
+                                texto: 'Ocurrió un error',
+                            })
+                        }
+                    })
+            }
         }
     }
     return (
@@ -250,14 +294,33 @@ const Cupones = () => {
                                                                                         </Col>
                                                                                         <Col xs={12} md={12} lg={6} >
                                                                                             {poliza.comentarios.map((comentario, i) => (
-                                                                                                <div className="my-2">
+                                                                                                <div className="my-2" key={i}>
                                                                                                     <div className="caja_comentario py-2 px-4">
                                                                                                         <small style={{ color: color_principal }}>Carlos Valdivia</small>
                                                                                                         <p className="p-0 m-0">{comentario.comentario}</p>
-                                                                                                        <small>{comentario.fecha_hora}</small> · <small onClick={() => { setId_respuesta_comentario(comentario.id) }} style={{ color: color_principal }}>Responder</small>
+                                                                                                        <small>{comentario.fecha_hora}</small> ·
+                                                                                                        <small onClick={() => {
+                                                                                                            setRespuesta_comentario('')
+                                                                                                            setId_respuesta_comentario(comentario.id)
+                                                                                                        }} style={{ color: color_principal }}>Responder  </small>
                                                                                                         {id_respuesta_comentario === comentario.id ? (
-                                                                                                            <Form.Control name="respuesta_comentario" type="text" placeholder="Escribe una respuesta..." onChange={e => setRespuesta_comentario(e.target.value)} value={respuesta_comentario} onKeyDown={EnviarRespuestaComentario} />
+                                                                                                            <Form.Control className="my-2 input_comentario" name="respuesta_comentario" type="text" placeholder="Escribe una respuesta..." onChange={e => setRespuesta_comentario(e.target.value)} value={respuesta_comentario} onKeyDown={(e) => { EnviarRespuestaComentario(e, comentario.id) }} />
                                                                                                         ) : (<></>)}
+                                                                                                        {id_respuesta_comentario === comentario.id && id_respuesta_comentario_condicion.condicion ? (<>
+                                                                                                            <small style={{ color: 'red' }}>{id_respuesta_comentario_condicion.texto}</small>
+                                                                                                        </>) : (<></>)}
+                                                                                                        {id_respuesta_comentario === comentario.id && spinnerComentarios ? (<>
+                                                                                                            <div key={i} className="caja_respuestas mb-1 ml-2 px-4 py-1 d-flex justify-content-center align-items-center" >
+                                                                                                                <Spinner animation="border" className="mr-2" size="sm" /> Agregando comentario...
+                                                                                                        </div>
+                                                                                                        </>) : (<></>)}
+                                                                                                        {/* {JSON.stringify(comentario.respuestas)} */}
+                                                                                                        {comentario.respuestas.map((respuesta, i) => (
+                                                                                                            <div key={i} className="caja_respuestas mb-1 ml-2 px-4 py-1" >
+                                                                                                                <small style={{ color: color_principal }}>Marco Rodriguez</small> · <small>{respuesta.fecha_hora}</small>
+                                                                                                                <p className="p-0 m-0">{respuesta.comentario}</p>
+                                                                                                            </div>
+                                                                                                        ))}
                                                                                                     </div>
                                                                                                 </div>
                                                                                             ))}
