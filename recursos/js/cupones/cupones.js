@@ -127,7 +127,6 @@ const Cupones = () => {
                     id_poliza_comentario: id_comentario,
                     comentario: e.target.value
                 }
-                console.log(JSON.stringify(datos))
                 fetch('/cupones/agregarrespuesta', {
                     method: 'POST',
                     body: JSON.stringify(datos),
@@ -137,7 +136,7 @@ const Cupones = () => {
                 }).then(res => res.json())
                     .catch(error => console.error('Error:', error))
                     .then(response => {
-                        if (response.error == 0) {
+                        if (response == 0) {
                             setRespuesta_comentario('')
                             setId_respuesta_comentario_condicion({
                                 ...id_respuesta_comentario_condicion,
@@ -146,7 +145,7 @@ const Cupones = () => {
                             })
                             setCondicionAnular(!condicionAnular)
                         }
-                        if (response.error == 1) {
+                        if (response == 1) {
                             setId_respuesta_comentario_condicion({
                                 ...id_respuesta_comentario_condicion,
                                 condicion: true,
@@ -221,9 +220,10 @@ const Cupones = () => {
                                     </Col>
                                 ) : (<></>)}
                                 <Col xs={12} lg={8} className="my-2">
-                                    <Accordion>
-                                        {cupones.map((cupon, id) => (
-                                            <Card key={id + 1} className="mb-2">
+
+                                    {cupones.map((cupon, id) => (
+                                        <Accordion key={id + 1}>
+                                            <Card className="mb-2">
                                                 <Accordion.Toggle as={Card.Header} eventKey={id + 1} style={estilos.acordion} onClick={() => toggleActive(id + 1)} >
                                                     <h6> {activeId === id + 1 ? (
                                                         <>
@@ -304,7 +304,7 @@ const Cupones = () => {
                                                                                                             setId_respuesta_comentario(comentario.id)
                                                                                                         }} style={{ color: color_principal }}>Responder  </small>
                                                                                                         {id_respuesta_comentario === comentario.id ? (
-                                                                                                            <Form.Control className="my-2 input_comentario" name="respuesta_comentario" type="text" placeholder="Escribe una respuesta..." onChange={e => setRespuesta_comentario(e.target.value)} value={respuesta_comentario} onKeyDown={(e) => { EnviarRespuestaComentario(e, comentario.id) }} />
+                                                                                                            <Form.Control className="my-2 input_comentario" name="respuesta_comentario" type="text" placeholder="Escribe una respuesta..." onChange={e => setRespuesta_comentario(e.target.value)} value={respuesta_comentario} onKeyDown={(e) => { EnviarRespuestaComentario(e, comentario.id) }} readOnly={spinnerComentarios ? true : false} />
                                                                                                         ) : (<></>)}
                                                                                                         {id_respuesta_comentario === comentario.id && id_respuesta_comentario_condicion.condicion ? (<>
                                                                                                             <small style={{ color: 'red' }}>{id_respuesta_comentario_condicion.texto}</small>
@@ -337,8 +337,9 @@ const Cupones = () => {
                                                     </Card.Body>
                                                 </Accordion.Collapse>
                                             </Card>
-                                        ))}
-                                    </Accordion>
+                                        </Accordion>
+                                    ))}
+
                                 </Col>
                             </>
                         )}

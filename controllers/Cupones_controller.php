@@ -18,6 +18,7 @@ use alekas\models\PolizasVehiculos;
 use alekas\models\Marcas;
 use alekas\models\Modelos;
 use alekas\models\PolizasComentarios;
+use alekas\models\PolizasRespuestas;
 
 class Cupones_controller extends Controller {
 
@@ -44,9 +45,12 @@ class Cupones_controller extends Controller {
             $polizas = FuncionesArray::groupArray($cupones[$cupon_k]['polizas'], 'id_poliza', 'documentos');
             $cupones[$cupon_k]['polizas'] = $polizas;
             foreach ($cupones[$cupon_k]['polizas'] as $polizas_k => $polizas_v) {
-            
                 $documentos = FuncionesArray::groupArray($cupones[$cupon_k]['polizas'][$polizas_k]['documentos'], 'id_documento', 'cupones');
-                $polizacomentarios = PolizasComentarios::select()->where([['id_poliza', $polizas_v['id_poliza']]])->run()->datos();
+                $polizacomentarios = PolizasComentarios::select()->where([['id_poliza', $polizas_v['id_poliza']]])->orderBy([['id', 'DESC']])->limit(1)->run()->datos();
+                foreach ($polizacomentarios as $polizacomentarios_k => $polizacomentarios_v) {
+                    $respuestas = PolizasRespuestas::select()->where([['id_poliza_comentario', $polizacomentarios_v['id']]])->orderBy([['id', 'DESC']])->limit(2)->run()->datos();
+                    $polizacomentarios[$polizacomentarios_k]['respuestas'] = $respuestas;
+                }
                 $cupones[$cupon_k]['polizas'][$polizas_k]['documentos'] = $documentos;
                 $cupones[$cupon_k]['polizas'][$polizas_k]['comentarios'] = $polizacomentarios;
             }
@@ -95,12 +99,22 @@ class Cupones_controller extends Controller {
         $respuesta = $poliza->update();
         echo $this->json($respuesta);
     }
-    
-    public function agregarRespuestaComentario(){
+
+    public function agregarComentario() {
         $polizacomentario = new PolizasComentarios(351, 'ejemplo');
         $respuesta = $polizacomentario->create();
         print_r($respuesta);
-        
+    }
+
+    public function agregarRespuesta(Request $request) {
+        $respuesta = PolizasRespuestas::setDataCreate($request->parametrosJson());
+        $resultado = $respuesta->create();
+        return $this->json($resultado['error']);
+    }
+
+    public function mostarRespuestas() {
+        $respuestas = PolizasRespuestas::select()->orderBy([['id', 'DESC']])->limit(2)->run(true)->datos();
+        return $this->json($respuestas);
     }
 
 }

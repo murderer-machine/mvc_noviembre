@@ -152,7 +152,7 @@ class Model {
         return $result;
     }
 
-    public function setDataCreate($parametros) {
+    public static function setDataCreate($parametros) {
         $parametros = (json_decode(json_encode($parametros), true));
         $result = self::instanciate($parametros);
         return $result;
@@ -167,6 +167,21 @@ class Model {
 
     public function join($table, $argumento_a, $operador, $argumento_b) {
         self::$consulta = self::$consulta . " INNER JOIN $table ON $argumento_a $operador $argumento_b";
+        return new self;
+    }
+
+    public function orderBy($datos) {
+        self::$consulta = self::$consulta . " ORDER BY ";
+        $count = count($datos) - 1;
+        foreach ($datos as $key => $dato) {
+            $condicion = $count === $key ? '' : ',';
+            self::$consulta = self::$consulta . "$dato[0] $dato[1]$condicion";
+        }
+        return new self;
+    }
+
+    public function limit($numero) {
+        self::$consulta = self::$consulta . " LIMIT $numero";
         return new self;
     }
 
