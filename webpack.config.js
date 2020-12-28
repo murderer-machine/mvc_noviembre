@@ -7,7 +7,7 @@ module.exports = {
         cupones: './recursos/js/cupones/cupones',
     },
     output: {
-        path: path.resolve(__dirname, './public/'),
+        path: path.resolve(__dirname, './public/assets/'),
         filename: '[name].js',
     },
 
