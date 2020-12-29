@@ -5,8 +5,7 @@ Módulo Cobranza
 @fin
 
 @bloque('cabeza')
-<link rel="stylesheet" href="assets/cupones.css?<?php echo uniqid()?>" type="text/css" media="all">
-<script src="assets/cupones.js?<?php echo uniqid()?>" defer async></script>
+cupones
 @fin
 
 @bloque('cuerpo')

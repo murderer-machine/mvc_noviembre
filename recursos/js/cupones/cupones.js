@@ -16,6 +16,7 @@ const Cupones = () => {
     const [id_poliza_seleccionada, setid_poliza_seleccionada] = useState({
         id: '',
         nro_poliza: '',
+        condicion: false
     })
     const [datos, setDatos] = useState({
         id_cliente: [],
@@ -35,6 +36,11 @@ const Cupones = () => {
             .then(response => {
                 setCupones(response)
                 setSpinnerCupones(false)
+                setid_poliza_seleccionada({
+                    id: '',
+                    nro_poliza: '',
+                    condicion: false
+                })
             }
             )
     }, [datos, actualizar_datos])
@@ -77,6 +83,7 @@ const Cupones = () => {
     const ModalAnularCerrar = () => setShowModalAnular(false)
     const ModalAnularAbrir = (id, nro_poliza) => {
         setid_poliza_seleccionada({
+            ...id_poliza_seleccionada,
             id: id,
             nro_poliza: nro_poliza,
         })
@@ -84,10 +91,15 @@ const Cupones = () => {
     }
     const anularPoliza = () => {
         ModalAnularCerrar()
+        setid_poliza_seleccionada({
+            ...id_poliza_seleccionada,
+            condicion: true
+        })
         fetch(`/cupones/anularpoliza/${id_poliza_seleccionada.id}`)
             .then(response => response.json())
             .then(response => {
                 setActualizar_datos(!actualizar_datos)
+
             })
     }
     return (
@@ -131,6 +143,7 @@ const Cupones = () => {
                                 <Form.Label>Nº de cuota</Form.Label>
                                 <Form.Control name="nro_cuota" type="text" placeholder="Ingrese Nº cuota" onChange={CambiarInput} value={datos.nro_cuota} />
                             </Form.Group>
+                            {JSON.stringify(id_poliza_seleccionada)}
                         </Card>
                     </Col>
                     <Col xs={12} lg={8} className="my-2">
@@ -184,6 +197,7 @@ const Cupones = () => {
                                                                 ))
                                                             }
                                                             <hr />
+                                                            <div className="anular_poliza" style={{ display: id_poliza_seleccionada.id == poliza.id_poliza.id && id_poliza_seleccionada.condicion ? 'flex' : 'none' }}><Spinner animation="border" /><span className="mx-2">Anulando ...</span></div>
                                                         </Alert>
                                                     </Col>
                                                 </Row>

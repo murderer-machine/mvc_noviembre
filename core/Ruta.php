@@ -65,7 +65,7 @@ class Ruta {
         }
         preg_match_all("/\@bloque\(\'([A-Za-z0-9 ]+?)\'\)/", $plantilla, $out);
         foreach ($out[1] as $key => $value) {
-            if (preg_match("/\@bloque\(\'" . $out[1][$key] . "'\)((.*[\s])+?)\@fin/", $vista, $out_vista)) {
+            if (preg_match("/\@bloque\(\'" . $out[1][$key] . "\'\)((.*[\s])+?)\@fin/", $vista, $out_vista)) {
                 $plantilla = str_replace($out[0][$key], $out_vista[1], $plantilla);
             } else {
                 $plantilla = str_replace($out[0][$key], '', $plantilla);
