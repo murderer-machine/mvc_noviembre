@@ -1,0 +1,30 @@
+@mixin responsive($breakpoint) {
+  @if $breakpoint== celular_p {
+    @media only screen and (max-width: 575.98px) {
+      @content;
+    }
+  }
+  @if $breakpoint== celular_l {
+    @media only screen and (min-width: 576px) and (max-width: 767.98px) {
+      @content;
+    }
+  }
+  @if $breakpoint==tablet {
+    @media only screen and (min-width: 768px) and (max-width: 991.98px) {
+      @content;
+    }
+  }
+  @if $breakpoint== pc {
+    @media only screen and (min-width: 992px) and (max-width: 1199.98px) {
+      @content;
+    }
+  }
+  @if $breakpoint== televisor {
+    @media only screen and (min-width: 1200px) {
+      @content;
+    }
+  }
+}
+$color_body: #ededed;
+$color_principal: #2A427B;
+

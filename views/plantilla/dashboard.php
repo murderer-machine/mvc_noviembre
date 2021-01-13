@@ -2,7 +2,7 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width"/>
         <title>@bloque('titulo')</title>
         <link rel="stylesheet" href="assets/general.css?<?php echo uniqid() ?>" type="text/css" media="all">
         <script src="assets/vendor.js?<?php echo uniqid() ?>" defer async></script>

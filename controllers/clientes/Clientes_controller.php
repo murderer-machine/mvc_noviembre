@@ -6,21 +6,21 @@
  * and open the template in the editor.
  */
 
-namespace alekas\controllers;
+namespace alekas\controllers\clientes;
 
 use alekas\core\Controller;
-use alekas\models\EmpresasSeguros;
+use alekas\models\Clientes;
 
 /**
- * Class EmpresasSeguros
+ * Class Clientes_controller
  *
  * @author Marco Antonio Rodriguez Salinas <alekas_oficial@hotmail.com>
  */
-class EmpresasSeguros_controller extends Controller {
+class Clientes_controller extends Controller {
 
     public function mostrar() {
-        $empresas = EmpresasSeguros::select('id,nombre,ruc')->where([['activo', 1]])->run()->datos(true);
-        return $empresas;
+        $clientes = Clientes::select('id,nombre,nrodoc')->run()->datos(true);
+        return $clientes;
     }
 
 }

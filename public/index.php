@@ -6,9 +6,9 @@ $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
 
 use alekas\core\Aplicacion;
-use alekas\controllers\Cupones_controller;
-use alekas\controllers\EmpresasSeguros_controller;
-use alekas\controllers\Clientes_controller;
+use alekas\controllers\cupones\Cupones_controller;
+use alekas\controllers\empresas\EmpresasSeguros_controller;
+use alekas\controllers\clientes\Clientes_controller;
 
 $url = $_GET['alekas_url'] ?? "/";
 
@@ -25,8 +25,7 @@ $app->ruta->get('cupones/mostrarrespuesta', [Cupones_controller::class, 'mostarR
 //Rutas POST
 $app->ruta->post('cupones/agregarrespuesta', [Cupones_controller::class, 'agregarRespuesta']);
 //Vistas
-$app->ruta->get('/', 'cupones');
-
+$app->ruta->get('/', 'ingreso');
 $app->Run();
 
 

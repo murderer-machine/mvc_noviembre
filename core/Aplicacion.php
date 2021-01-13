@@ -36,6 +36,7 @@ class Aplicacion {
         $this->session = new Session();
         $this->request = new Request(self::$root);
         $this->ruta = new Ruta($this->request, $this->session);
+        require "$root_principal/corelib/VariablesGlobales.php";
     }
 
     public function Run() {

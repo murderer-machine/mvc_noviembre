@@ -4,9 +4,9 @@ namespace alekas\corelib;
 
 class GenerarToken {
 
-    protected static $clave = 'alekas@2015';
-    protected static $metodo = 'aes-128-ctr';
-    protected static $algoritmo = 'sha512';
+    protected static $clave = clave_general_server;
+    protected static $metodo = metodo;
+    protected static $algoritmo = algoritmo;
     protected static $enc_key;
 
     public function __construct() {
@@ -23,6 +23,12 @@ class GenerarToken {
         list($token, $enc_iv) = explode(".", base64_decode($token));
         $token = openssl_decrypt($token, self::$metodo, self::$enc_key, 0, hex2bin($enc_iv));
         return $token;
+    }
+
+    static function TokenUnico($data) {
+        $context = hash_init(self::$algoritmo, HASH_HMAC, self::$clave);
+        hash_update($context, $data);
+        return hash_final($context);
     }
 
 }

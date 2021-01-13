@@ -1,0 +1,184 @@
+@import "../../scss/variables.scss";
+.ingreso_menu {
+    border: 1px solid $color_body;
+    @include responsive(celular_p) {
+        position: initial;
+        background-color: #fff;
+    }
+    @include responsive(celular_l) {
+        position: initial;
+        background-color: #fff;
+    }
+    @include responsive(tablet) {
+        position: initial;
+        background-color: #fff;
+    }
+    @include responsive(pc) {
+        position: fixed;
+    }
+    @include responsive(televisor) {
+        position: fixed;
+    }
+}
+.logo_horizontal {
+    @include responsive(celular_p) {
+        height: 65px;
+    }
+    @include responsive(celular_l) {
+        height: 65px;
+    }
+    @include responsive(tablet) {
+        height: 65px;
+    }
+    @include responsive(pc) {
+        height: 65px;
+    }
+    @include responsive(televisor) {
+        height: 65px;
+    }
+}
+.ingreso_general {
+    @include responsive(celular_p) {
+        flex-direction: column-reverse;
+    }
+    @include responsive(celular_l) {
+        flex-direction: column-reverse;
+    }
+    @include responsive(tablet) {
+        flex-direction: column-reverse;
+    }
+    @include responsive(pc) {
+        flex-direction: initial;
+    }
+    @include responsive(televisor) {
+        flex-direction: initial;
+    }
+}
+.ingreso_derecho {
+    @include responsive(celular_p) {
+        height: initial;
+        padding: 5%;
+        
+    }
+    @include responsive(celular_l) {
+        height: initial;
+        padding: 5%;
+    }
+    @include responsive(tablet) {
+        height: initial;
+        padding: 5%;
+    }
+    @include responsive(pc) {
+        height: 100vh;
+        padding: 0 5%;
+        background-color: #fff;
+    }
+    @include responsive(televisor) {
+        height: 100vh;
+        padding: 0 5%;
+        background-color: #fff;
+    }
+}
+.ingreso_izquierdo {
+    @include responsive(celular_p) {
+        height: initial;
+        padding: 5%;
+        background-color: #fff;
+        margin-top: 97px;
+    }
+    @include responsive(celular_l) {
+        height: initial;
+        padding: 5%;
+        background-color: #fff;
+    }
+    @include responsive(tablet) {
+        height: initial;
+        padding: 5%;
+        background-color: #fff;
+    }
+    @include responsive(pc) {
+        height: 100vh;
+        padding: 0 5%;
+    }
+    @include responsive(televisor) {
+        height: 100vh;
+        padding: 0 5%;
+    }
+}
+.ingreso_centro {
+    height: 100vh;
+    background: rgba(255, 255, 255, 1);
+    background: -moz-linear-gradient(
+        left,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 1) 51%,
+        rgba(237, 237, 237, 1) 51%,
+        rgba(237, 237, 237, 1) 100%
+    );
+    background: -webkit-gradient(
+        left top,
+        right top,
+        color-stop(0%, rgba(255, 255, 255, 1)),
+        color-stop(51%, rgba(255, 255, 255, 1)),
+        color-stop(51%, rgba(237, 237, 237, 1)),
+        color-stop(100%, rgba(237, 237, 237, 1))
+    );
+    background: -webkit-linear-gradient(
+        left,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 1) 51%,
+        rgba(237, 237, 237, 1) 51%,
+        rgba(237, 237, 237, 1) 100%
+    );
+    background: -o-linear-gradient(
+        left,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 1) 51%,
+        rgba(237, 237, 237, 1) 51%,
+        rgba(237, 237, 237, 1) 100%
+    );
+    background: -ms-linear-gradient(
+        left,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 1) 51%,
+        rgba(237, 237, 237, 1) 51%,
+        rgba(237, 237, 237, 1) 100%
+    );
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 1) 51%,
+        rgba(237, 237, 237, 1) 51%,
+        rgba(237, 237, 237, 1) 100%
+    );
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=1 );
+}
+.ingreso_derecho h1:nth-of-type(1) {
+    font-weight: 300;
+}
+.ingreso_derecho h1:nth-of-type(2) {
+    color: $color_principal;
+    font-weight: 600;
+}
+.ingreso_izquierdo h3:nth-of-type(1) {
+    font-weight: 600;
+    color: $color_principal;
+}
+
+.ingreso_ejecutivo {
+    @include responsive(celular_p) {
+        height: 100px;
+    }
+    @include responsive(celular_l) {
+        height: 100px;
+    }
+    @include responsive(tablet) {
+        height: 100px;
+    }
+    @include responsive(pc) {
+        height: 350px;
+    }
+    @include responsive(televisor) {
+        height: 350px;
+    }
+}

@@ -9,6 +9,8 @@ namespace alekas\core;
  */
 class Session {
 
+    private static $nombreId;
+
     public function __construct() {
         ini_set("session.hash_bits_per_character", 5);
         ini_set("session.hash_function", 5);
@@ -16,16 +18,24 @@ class Session {
         ini_set("session.use_trans_sid", true);
         ini_set("session.cookie_httponly", true);
         ini_set("session.cookie_secure", true);
-        $this->inicio();
+        self::$nombreId = "SESSION_ALEKAS";
+        session_name(self::$nombreId);
+        session_start();
     }
 
-    public function inicio() {
-        $time = time() + 60 * 60 * 24 * 365;
-        session_set_cookie_params(60 * 60 * 24 * 365);
-        $id = 'SESSION_ALEKAS';
-        session_name('SESSION_ALEKAS');
-        !isset($_COOKIE[$id]) ? setcookie($id, session_create_id(), $time) : session_id($_COOKIE[$id]);
-        session_start();      
+    public static function inicio($limite = false) {
+        session_unset();
+        session_destroy();
+        $id = self::$nombreId;
+        session_name($id);
+        if ($limite) {
+            $time = time() + 60 * 60 * 24 * 365;
+            session_set_cookie_params(60 * 60 * 24 * 365);
+            !isset($_COOKIE[$id]) ? setcookie($id, session_create_id(), $time) : session_id($_COOKIE[$id]);
+        } else {
+            !isset($_COOKIE[$id]) ? setcookie($id, session_create_id()) : session_id($_COOKIE[$id]);
+        }
+        session_start();
     }
 
     static function imprimirSession() {
@@ -33,9 +43,10 @@ class Session {
         print_r($_COOKIE);
     }
 
-    static function destroy() {
+    public static function destroy() {
         session_unset();
         session_destroy();
+        return true;
     }
 
     static function getValue($var) {
@@ -53,11 +64,7 @@ class Session {
     }
 
     static function exist() {
-        if (sizeof($_SESSION) > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return sizeof($_SESSION) > 0 ? true : false;
     }
 
 }

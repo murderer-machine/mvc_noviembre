@@ -1,6 +1,6 @@
 <?php
 
-namespace alekas\controllers;
+namespace alekas\controllers\cupones;
 
 use alekas\core\Controller;
 use alekas\core\Request;
@@ -69,23 +69,18 @@ class Cupones_controller extends Controller {
                     $vehiculos[$vehiculos_k]['modelo'] = $modelo[0];
                 }
                 $cupones[$cupon_k]['polizas'][$polizas_k]['id_poliza']['vehiculos'] = $vehiculos;
-
                 foreach ($cupones[$cupon_k]['polizas'][$polizas_k]['documentos'] as $documento_k => $documento_v) {
                     foreach ($cupones[$cupon_k]['polizas'][$polizas_k]['documentos'][$documento_k]['cupones'] as $cupones_key => $cupones_value) {
                         $cupones[$cupon_k]['polizas'][$polizas_k]['documentos'][$documento_k]['cupones'][$cupones_key]['dias_vencidos'] = FechaHora::DiferenciaFechas($cupones[$cupon_k]['polizas'][$polizas_k]['documentos'][$documento_k]['cupones'][$cupones_key]['fecha_obligacion']);
                         $cupones[$cupon_k]['polizas'][$polizas_k]['documentos'][$documento_k]['cupones'][$cupones_key]['fecha_obligacion'] = FechaHora::CambiarTipo($cupones[$cupon_k]['polizas'][$polizas_k]['documentos'][$documento_k]['cupones'][$cupones_key]['fecha_obligacion']);
                     }
                 }
-
                 $empresa = EmpresasSeguros::select('id,nombre,ruc,logo')->where([['id', $cupones[$cupon_k]['polizas'][$polizas_k]['id_poliza']['id_empresa']]])->run()->datos();
                 $cupones[$cupon_k]['polizas'][$polizas_k]['id_poliza']['id_empresa'] = $empresa[0];
-
                 $producto = ProductosEmpresasSeguros::select('id,nombre')->where([['id', $cupones[$cupon_k]['polizas'][$polizas_k]['id_poliza']['id_producto']]])->run()->datos();
                 $cupones[$cupon_k]['polizas'][$polizas_k]['id_poliza']['id_producto'] = $producto[0];
-
                 $ramo = Ramos::select('id,descripcion')->where([['id', $cupones[$cupon_k]['polizas'][$polizas_k]['id_poliza']['id_ramo']]])->run()->datos();
                 $cupones[$cupon_k]['polizas'][$polizas_k]['id_poliza']['id_ramo'] = $ramo[0];
-
                 $moneda = Monedas::select()->where([['id', $cupones[$cupon_k]['polizas'][$polizas_k]['id_poliza']['moneda']]])->run()->datos();
                 $cupones[$cupon_k]['polizas'][$polizas_k]['id_poliza']['moneda'] = $moneda[0];
             }

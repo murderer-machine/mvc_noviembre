@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
     entry: {
         general: './recursos/general',
+        ingreso: './recursos/js/auth/ingreso',
         cupones: './recursos/js/cupones/cupones',
     },
     output: {
