@@ -1,60 +1,65 @@
-import React, { useState } from 'react'
+import React, { useState, version } from 'react'
 import ReactDOM from 'react-dom'
 import { Form, Container, Row, Col, Image } from 'react-bootstrap'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+
 import './ingreso.scss'
 const Ingreso = () => {
     const [datos, setDatos] = useState({
         dni: '',
         password: '',
+        recordar: false,
+    })
+    const [datos_verificado, setDatos_verificado] = useState({
+        dni: true,
+        password: true,
     })
     const [variante, setVariante] = useState({
         style: '',
         mensaje: '',
     });
     const handleInputChange = (event) => {
+        const { type, checked, name, value } = event.target
         setDatos({
             ...datos,
-            [event.target.name]: event.target.value
+            [name]: type === 'checkbox' ? checked : value
         })
     }
-
+    const Verificar = (event) => {
+        let dni = datos.dni === '' ? false : true
+        let password = datos.password === '' ? false : true
+        setDatos_verificado({
+            dni: dni,
+            password: password,
+        })
+        return dni && password
+    }
     const enviarDatos = (event) => {
-        event.preventDefault();
-        var url = `${URL}Auth/Ingresar`;
-        fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(datos),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(res => res.json())
-            .catch(error => console.error('Error:', error))
-            .then(response => {
-                if (response === 0) {
-                    window.location.href = `${URL}Dashboard/Inicio`
+        event.preventDefault()
+        if (Verificar()) {
+            var url = `/login`
+            fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(datos),
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-                if (response === 1) {
-                    setVariante({
-                        style: 'error',
-                        mensaje: 'DNI de usuario o contraseña incorrecta',
-                    })
-                }
-                if (response === 2) {
-                    setVariante({
-                        style: 'warning',
-                        mensaje: 'Falta rellenar campos',
-                    })
-                }
-            });
+            }).then(res => res.json())
+                .catch(error => console.error('Error:', error))
+                .then(response => {
+                    response === 1 ? (window.location.href = `/ejemplo`) : {}
+                })
+        }
     }
     return (
         <>
             <Container>
-                <AppBar position="fixed" color="transparent" elevation="elevation0">
+                <AppBar position="fixed" color="transparent" elevation={0}>
                     <Toolbar>
                         <Image
                             className="logo_horizontal m-3"
@@ -89,32 +94,44 @@ const Ingreso = () => {
                             </Col>
                             <Col xs={12} className="mb-3">
                                 <TextField
-                                    label="Usuario"
+                                    error={!datos_verificado.dni}
+                                    label="DNI"
                                     name="dni"
                                     value={datos.dni}
                                     onChange={handleInputChange}
-                                    required
                                     fullWidth={true}
                                     variant="outlined"
                                     size="small"
+                                    autoComplete="off"
                                 />
                             </Col>
                             <Col xs={12} className="mb-3">
                                 <TextField
+                                    error={!datos_verificado.password}
                                     label="Contraseña"
                                     name="password"
                                     value={datos.password}
                                     type="password"
                                     onChange={handleInputChange}
-                                    required
                                     fullWidth={true}
                                     variant="outlined"
                                     size="small"
+                                    autoComplete="off"
                                 />
+                            </Col>
+                            <Col xs={12} className="mb-3">
+                                <Checkbox
+                                    checked={datos.recordar}
+                                    onChange={handleInputChange}
+                                    name="recordar"
+                                    color="primary"
+                                /> Mantener la sesión iniciada
                             </Col>
                             <Col xs={12} className="mb-3">
                                 <Button variant="contained" type="submit" className="btn-principal">Ingresar</Button>
                             </Col>
+                            {JSON.stringify(datos)}
+                            {JSON.stringify(datos_verificado)}
                         </Form>
                     </Col>
                 </Row>

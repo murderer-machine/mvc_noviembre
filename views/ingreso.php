@@ -1,7 +1,7 @@
 @plantilla('dashboard')
 
 @bloque('titulo')
-Ingreso al sistemas
+Ingreso al sistema
 @fin
 
 @bloque('cabeza')

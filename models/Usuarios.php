@@ -13,9 +13,9 @@ class Usuarios extends Model {
     protected $apellidos;
     protected $correo;
     protected $password;
-    protected $fecha_creacion;
+    protected $fecha_creacion = fecha;
 
-    function __construct($id, $dni, $nombres, $apellidos, $correo, $password, $fecha_creacion) {
+    function __construct($id, $dni, $nombres, $apellidos, $correo, $password) {
         $this->id = $id;
         $this->dni = $dni;
         $this->nombres = $nombres;
@@ -23,10 +23,6 @@ class Usuarios extends Model {
         $this->correo = $correo;
         $this->password = $password;
         $this->fecha_creacion = $fecha_creacion;
-    }
-
-    static function getTable() {
-        return self::$table;
     }
 
     function getId() {
@@ -57,44 +53,32 @@ class Usuarios extends Model {
         return $this->fecha_creacion;
     }
 
-    static function setTable($table) {
-        self::$table = $table;
-        return self;
-    }
-
-    function setId($id) {
+    function setId($id): void {
         $this->id = $id;
-        return $this;
     }
 
-    function setDni($dni) {
+    function setDni($dni): void {
         $this->dni = $dni;
-        return $this;
     }
 
-    function setNombres($nombres) {
+    function setNombres($nombres): void {
         $this->nombres = $nombres;
-        return $this;
     }
 
-    function setApellidos($apellidos) {
+    function setApellidos($apellidos): void {
         $this->apellidos = $apellidos;
-        return $this;
     }
 
-    function setCorreo($correo) {
+    function setCorreo($correo): void {
         $this->correo = $correo;
-        return $this;
     }
 
-    function setPassword($password) {
+    function setPassword($password): void {
         $this->password = $password;
-        return $this;
     }
 
-    function setFecha_creacion($fecha_creacion) {
+    function setFecha_creacion($fecha_creacion): void {
         $this->fecha_creacion = $fecha_creacion;
-        return $this;
     }
 
 }

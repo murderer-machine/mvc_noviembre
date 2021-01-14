@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="assets/general.css?<?php echo uniqid() ?>" type="text/css" media="all">
         <script src="assets/vendor.js?<?php echo uniqid() ?>" defer async></script>
         <script src="assets/general.js?<?php echo uniqid() ?>" defer async></script>
+        
         <link rel="stylesheet" href="assets/@bloque('cabeza').css?<?php echo uniqid() ?>" type="text/css" media="all">
         <script src="assets/@bloque('cabeza').js?<?php echo uniqid() ?>" defer async></script>
     </head>

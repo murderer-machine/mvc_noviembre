@@ -25,20 +25,31 @@ label::after {
     outline: none !important;
 }
 // Mui
+/* input */
 .MuiAppBar-colorPrimary {
     color: inherit;
     background-color: $color_principal !important;
 }
-.MuiOutlinedInput-notchedOutline {
+.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
     border-color: $color_principal !important;
-    border-width: 0px;
+    border-width: 1px !important;
 }
-
+.MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline {
+    border-color: $color_error !important;
+}
 .MuiInputLabel-root {
     color: $color_principal !important;
 }
+.MuiInputLabel-root.Mui-error {
+    color: $color_error !important;
+}
+/*button*/
 .btn-principal {
     background-color: $color_principal !important;
     border-width: 0px !important;
     color: #fff !important;
+}
+/*checked*/
+.MuiCheckbox-root.Mui-checked {
+    color: $color_principal !important;
 }
