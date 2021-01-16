@@ -9956,7 +9956,16 @@ label::after {
   color: #fff !important;
 }
 
+.btn-principal.Mui-disabled {
+  background-color: rgba(42, 66, 123, 0.8) !important;
+}
+
 /*checked*/
 .MuiCheckbox-root.Mui-checked {
   color: #2a427b !important;
+}
+
+/*spienner*/
+.spinner_blanco {
+  color: #fff !important;
 }

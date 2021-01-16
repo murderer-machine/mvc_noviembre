@@ -49,7 +49,15 @@ label::after {
     border-width: 0px !important;
     color: #fff !important;
 }
+.btn-principal.Mui-disabled {
+    background-color: rgba($color: $color_principal, $alpha: 0.8) !important;
+}
+
 /*checked*/
 .MuiCheckbox-root.Mui-checked {
     color: $color_principal !important;
+}
+/*spienner*/
+.spinner_blanco {
+    color: #fff !important;
 }

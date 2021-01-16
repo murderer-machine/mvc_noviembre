@@ -32,15 +32,16 @@ $app->ruta->post('login', [SessionController::class, 'login']);
 
 //Vistas
 $app->ruta->get('/', 'ingreso');
+$app->ruta->get('ejemplo', 'menu');
 
 //Funciones
-$app->ruta->get('ejemplo', function() {
-    echo 'soy ejemplo';
-    $respuesta = new Controller();
-    $respuesta->VerificaSession();
-    Session::imprimirSession();
-    
-});
+/* $app->ruta->get('ejemplo', function() {
+  echo 'soy ejemplo';
+  $respuesta = new Controller();
+  $respuesta->VerificaSession();
+  Session::imprimirSession();
+
+  }); */
 
 $app->Run();
 

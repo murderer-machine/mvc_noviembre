@@ -21,16 +21,11 @@ class Controller {
     }
 
     public function VerificaSession() {
-        Session::exist() ?: $this->redirect('/');
-        exit;
+        Session::exist() ?: header('Location: /');
     }
 
     public function VerificarSessionAuth() {
-        !Session::exist() ?: $this->redirect('/ejemplo');
-    }
-
-    public function redirect($url) {
-        echo'<script type="text/javascript">window.location.href="' . $url . '";</script>';
+        Session::exist() ? header('Location: /ejemplo') : '';
     }
 
 }

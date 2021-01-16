@@ -1,4 +1,4 @@
-import React, { useState, version } from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Form, Container, Row, Col, Image } from 'react-bootstrap'
 import TextField from '@material-ui/core/TextField'
@@ -6,8 +6,8 @@ import Button from '@material-ui/core/Button'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Alert from '@material-ui/lab/Alert';
 import './ingreso.scss'
 const Ingreso = () => {
     const [datos, setDatos] = useState({
@@ -19,10 +19,8 @@ const Ingreso = () => {
         dni: true,
         password: true,
     })
-    const [variante, setVariante] = useState({
-        style: '',
-        mensaje: '',
-    });
+    const [spinner_button, SetSpinner_button] = useState(false)
+    const [alerta_login, setAlerta_login] = useState(false)
     const handleInputChange = (event) => {
         const { type, checked, name, value } = event.target
         setDatos({
@@ -30,7 +28,7 @@ const Ingreso = () => {
             [name]: type === 'checkbox' ? checked : value
         })
     }
-    const Verificar = (event) => {
+    const Verificar = () => {
         let dni = datos.dni === '' ? false : true
         let password = datos.password === '' ? false : true
         setDatos_verificado({
@@ -42,6 +40,8 @@ const Ingreso = () => {
     const enviarDatos = (event) => {
         event.preventDefault()
         if (Verificar()) {
+            SetSpinner_button(true)
+            setAlerta_login(false)
             var url = `/login`
             fetch(url, {
                 method: 'POST',
@@ -52,7 +52,9 @@ const Ingreso = () => {
             }).then(res => res.json())
                 .catch(error => console.error('Error:', error))
                 .then(response => {
-                    response === 1 ? (window.location.href = `/ejemplo`) : {}
+                    SetSpinner_button(false)
+                    response == 1 ? window.location.href = `/ejemplo` : {}
+                    response == 0 ? setAlerta_login(true) : {}
                 })
         }
     }
@@ -92,6 +94,11 @@ const Ingreso = () => {
                             <Col xs={12} className="mb-3">
                                 <h3 className="d-inline">Inicia</h3> <h3 className="d-inline">sesión</h3>
                             </Col>
+                            {alerta_login ? (
+                                <Col xs={12} className="mb-3">
+                                    <Alert severity="error"><b>DNI</b> ó <b>Contraseña</b> no válidos</Alert>
+                                </Col>
+                            ) : (<></>)}
                             <Col xs={12} className="mb-3">
                                 <TextField
                                     error={!datos_verificado.dni}
@@ -128,10 +135,8 @@ const Ingreso = () => {
                                 /> Mantener la sesión iniciada
                             </Col>
                             <Col xs={12} className="mb-3">
-                                <Button variant="contained" type="submit" className="btn-principal">Ingresar</Button>
+                                <Button variant="contained" type="submit" className="btn-principal" disabled={spinner_button}>{spinner_button ? (<CircularProgress size={15} className="spinner_blanco mr-2" />) : (<></>)}Ingresar</Button>
                             </Col>
-                            {JSON.stringify(datos)}
-                            {JSON.stringify(datos_verificado)}
                         </Form>
                     </Col>
                 </Row>

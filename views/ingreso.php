@@ -1,4 +1,4 @@
-@plantilla('dashboard')
+@plantilla('dashboardLogin')
 
 @bloque('titulo')
 Ingreso al sistema

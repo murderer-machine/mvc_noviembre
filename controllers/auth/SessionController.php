@@ -10,7 +10,7 @@ use alekas\core\Request;
 use alekas\models\Usuarios;
 
 class SessionController extends Controller {
-  
+
     public function login(Request $request) {
         $token = new GenerarToken();
         $datos = $request->parametrosJson();
@@ -18,7 +18,7 @@ class SessionController extends Controller {
         $usuario = Usuarios::select()->where([["dni", $datos->dni], ["password", $datos->password]])->run()->datos();
         if (!empty($usuario)) {
             Session::inicio($datos->recordar);
-            Session::setValue('id', $usuario[0]["id"]);
+            Session::setValue('id', $token->Encriptar($usuario[0]["id"]));
             return $this->json($resultado["error"] = 1);
         } else {
             return $this->json($resultado["error"] = 0);
