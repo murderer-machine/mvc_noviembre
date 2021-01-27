@@ -1,0 +1,23 @@
+@import "../../scss/variables.scss";
+.menu_logo_horizontal {
+    @include responsive(celular_p) {
+        width: 64%;
+    }
+    @include responsive(celular_l) {
+        width: 64%;
+    }
+    @include responsive(tablet) {
+        width: 18%;
+    }
+    @include responsive(pc) {
+        width: 18%;
+    }
+    @include responsive(televisor) {
+        width: 18%;
+    }
+}
+#div_menu_top {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}

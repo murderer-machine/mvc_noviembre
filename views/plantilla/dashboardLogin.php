@@ -18,6 +18,6 @@ echo Controller::VerificarSessionAuth();
         <script src="assets/@bloque('cabeza').js?<?php echo uniqid() ?>" defer async></script>
     </head>
     <body>
-        @bloque('cuerpo') 
+        @bloque('cuerpo')
     </body>
 </html>

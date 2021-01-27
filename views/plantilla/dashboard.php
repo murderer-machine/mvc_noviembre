@@ -10,12 +10,11 @@
 
         <link rel="stylesheet" href="assets/menu.css?<?php echo uniqid() ?>" type="text/css" media="all">
         <script src="assets/menu.js?<?php echo uniqid() ?>" defer async></script>
-        
+
         <link rel="stylesheet" href="assets/@bloque('cabeza').css?<?php echo uniqid() ?>" type="text/css" media="all">
         <script src="assets/@bloque('cabeza').js?<?php echo uniqid() ?>" defer async></script>
     </head>
     <body>
-        <div id="menu"></div>
-
+    @bloque('cuerpo')
     </body>
 </html>

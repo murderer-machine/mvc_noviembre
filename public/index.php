@@ -32,7 +32,7 @@ $app->ruta->post('login', [SessionController::class, 'login']);
 
 //Vistas
 $app->ruta->get('/', 'ingreso');
-$app->ruta->get('ejemplo', 'menu');
+$app->ruta->get('ejemplo', 'inicio');
 
 //Funciones
 /* $app->ruta->get('ejemplo', function() {

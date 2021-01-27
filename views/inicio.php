@@ -1,11 +1,15 @@
 @plantilla('dashboard')
 
 @bloque('titulo')
-Ingreso al sistema
+Inicio
 @fin
 
 @bloque('cabeza')
-ingreso
+inicio
+@fin
+
+@bloque('cuerpo')
+<div id="inicio"></div>
 @fin
 
 
